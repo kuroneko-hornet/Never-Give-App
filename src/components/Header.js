@@ -1,45 +1,131 @@
-import React, { useContext } from "react";
+// import React, { useContext } from "react";
 import dig from "object-dig";
 import { signInWithGoogle, logOut } from "../service/firebase";
 import { AuthContext } from "../providers/AuthProvider";
-import { makeStyles } from "@material-ui/core/styles";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
+import * as React from 'react';
+import PropTypes from 'prop-types';
+import AppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import Divider from '@mui/material/Divider';
+import Drawer from '@mui/material/Drawer';
+import IconButton from '@mui/material/IconButton';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemText from '@mui/material/ListItemText';
+import MenuIcon from '@mui/icons-material/Menu';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
 
-const useStyles = makeStyles (() => ({
-    toolbar: {
-        justifyContent: 'space-between'
-    },
-    button: {
-        color: '#FFF'
-    }
-}));
+const drawerWidth = 240;
+const navItems = ['Home', 'Log', 'Graph'];
 
-const Header = () => {
-    const currentUser = useContext(AuthContext);
-    const classes = useStyles();
-    const buttonRender = () => {
+function Header(props) {
+    const { window } = props;
+    const [mobileOpen, setMobileOpen] = React.useState(false);
+
+    const handleDrawerToggle = () => {
+        setMobileOpen(!mobileOpen);
+    };
+
+    const currentUser = React.useContext(AuthContext);
+
+    const buttonRender = (color) => {
         let buttonDom
         if ( dig(currentUser, 'currentUser', 'uid') ) {
-            buttonDom = <Button className={classes.button} variant='inherit' onClick={logOut}>ログアウト</Button>            
+            buttonDom = <Button variant='text' onClick={logOut}
+                sx={{ color: color }}>Logout</Button>            
         } else {
-            buttonDom = <Button className={classes.button} variant='inherit'  onClick={signInWithGoogle}>ログイン</Button>
+            buttonDom = <Button variant='text' onClick={signInWithGoogle}
+                sx={{ color: color }}>Login</Button>
         }
         return buttonDom
     }
 
+    // burger menu
+    const drawer = (
+        <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
+        <Typography variant="h6" sx={{ my: 2 }}>
+            Never Give App
+        </Typography>
+        <Divider />
+        <List>
+            {navItems.map((item) => (
+            <ListItem key={item} disablePadding>
+                <ListItemButton sx={{ textAlign: 'center' }}>
+                <ListItemText primary={item} />
+                </ListItemButton>
+            </ListItem>
+            ))}
+            <ListItem sx={{ justifyContent: 'center' }}>{buttonRender('#000')}</ListItem>
+        </List>
+        </Box>
+    );
+
+
+    const container = window !== undefined ? () => window().document.body : undefined;
 
     return (
-        <AppBar position="static">
-            <Toolbar className={classes.toolbar}>
-                <Typography variant="h6">
-                    ReactToDo
-                </Typography>
-                {buttonRender()}
-            </Toolbar>
-        </AppBar>
-    )
+        <Box sx={{ display: 'flex' }}>
+            <AppBar component="nav">
+                <Toolbar>
+                    <IconButton
+                        color="inherit"
+                        aria-label="open drawer"
+                        edge="start"
+                        onClick={handleDrawerToggle}
+                        sx={{ mr: 2, display: { sm: 'none' } }}
+                        >
+                        <MenuIcon />
+                    </IconButton>
+                    <Typography
+                        variant="h6"
+                        component="div"
+                        sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
+                        >
+                        Never Give App
+                    </Typography>
+                    <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+                        {navItems.map((item) => (
+                        <Button key={item} sx={{ color: '#fff' }}>
+                            {item}
+                        </Button>
+                        ))}
+                    {buttonRender("#fff")}
+                    </Box>
+                </Toolbar>
+            </AppBar>
+            <Box component="nav">
+                <Drawer
+                container={container}
+                variant="temporary"
+                open={mobileOpen}
+                onClose={handleDrawerToggle}
+                ModalProps={{
+                    keepMounted: true, // Better open performance on mobile.
+                }}
+                sx={{
+                    display: { xs: 'block', sm: 'none' },
+                    '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+                }}
+                >
+                {drawer}
+                </Drawer>
+            </Box>
+            <Box component="main" sx={{ p: 3 }}>
+                <Toolbar />
+            </Box>
+        </Box>
+    );
 }
+
+Header.propTypes = {
+  /**
+   * Injected by the documentation to work in an iframe.
+   * You won't need it on your project.
+   */
+  window: PropTypes.func,
+};
+
 export default Header;
