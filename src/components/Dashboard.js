@@ -64,17 +64,30 @@ const weightList = [1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30];
 export default function SelectBodyRegionFields() {
     const currentUser = React.useContext(AuthContext);
     const [selectedExercise, setExercise] = React.useState('');
-    const [reps, setReps] = React.useState(<MenuItem>None</MenuItem>);
-    
+    const [weight, setWeight] = React.useState('');
+    const [reps, setReps] = React.useState('');
+    const [sets, setSets] = React.useState('');
+
     const handleExercise = (event) => {
         setExercise(event.target.value);
+    };
+
+    const handleWeight = (event) => {
+        setWeight(event.target.value);
+    };
+
+    const handleSets = (event) => {
+        setSets(event.target.value);
+    };
+
+    const handleReps = (event) => {
+        setReps(event.target.value);
     };
 
     if ( dig(currentUser, 'currentUser', 'uid') ) {
         const exerciseForm = <FormControl sx={{ m: 1, minWidth: 120 }}>
             <InputLabel htmlFor="grouped-native-select">Exercise</InputLabel>
-            <Select native defaultValue="select exercise" id="exercise" label="exercise">
-            {/* onChange={handleExercise} */}
+            <Select native defaultValue="select exercise" id="exercise" label="exercise" onChange={handleExercise} >
             {exerciseDicts.map( (region) => (
                         <optgroup label={region.label} key={region.label}>
                             {region.exercise.map( (exercise) => (
@@ -85,19 +98,26 @@ export default function SelectBodyRegionFields() {
             </Select>
         </FormControl>
 
-        const setForm = <FormControl sx={{ m: 1, minWidth: 60 }}>
+        const weightForm = <FormControl sx={{ m: 1, minWidth: 60 }}>
             <InputLabel htmlFor="grouped-native-select">kg</InputLabel>
-            <Select native defaultValue="10" id="weight" label="weight">
-            {/* onChange={handleExercise} */}
+            <Select native defaultValue="10" id="weight" label="weight" onChange={handleWeight} >
             {weightList.map( (w) => (
                 <option value={ w } key={ w }>{w}</option>
                 ))}
             </Select>
         </FormControl>
 
+        const setForm = <FormControl sx={{ m: 1, minWidth: 80 }}>
+            <InputLabel htmlFor="grouped-native-select">Sets</InputLabel>
+            <Select native defaultValue="3" id="sets" label="sets" onChange={handleSets} >
+                <option value={1}>1</option>
+                <option value={2}>2</option>
+                <option value={3}>3</option>
+            </Select>
+        </FormControl>
+
         const repsForm = <FormControl sx={{ m: 1, minWidth: 60 }}>
-            <TextField id="reps" label="Reps" type="reps" defaultValue="10"
-            sx={{ width: 100 }}/>
+            <TextField id="reps" label="Reps" type="reps" defaultValue="10" onChange={handleReps} sx={{ width: 100 }}/>
         </FormControl>
 
         const submitForm = ""
@@ -105,6 +125,7 @@ export default function SelectBodyRegionFields() {
         return (
             <Box sx={{ textAlign: 'center' }}>
                 {exerciseForm}
+                {weightForm}
                 {setForm}
                 {repsForm}
                 {submitForm}
