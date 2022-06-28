@@ -31,16 +31,49 @@ function Header(props) {
 
     const currentUser = React.useContext(AuthContext);
 
-    const buttonRender = (color) => {
-        let buttonDom
+    const menuRender = () => {
+        let menuDom
         if ( dig(currentUser, 'currentUser', 'uid') ) {
-            buttonDom = <Button variant='text' onClick={logOut}
-                sx={{ color: color }}>Logout</Button>            
+            menuDom = <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+                {navItems.map((item) => (
+                    <Button key={item} sx={{ color: '#fff' }}>
+                        {item}
+                    </Button>
+                ))}
+                <Button variant='text' onClick={logOut}
+                    sx={{ color: "#fff" }}>Logout
+                </Button>            
+            </Box>
         } else {
-            buttonDom = <Button variant='text' onClick={signInWithGoogle}
-                sx={{ color: color }}>Login</Button>
+            menuDom = <Button variant='text' onClick={signInWithGoogle}
+                sx={{ color: "#fff"}}>Login</Button>
         }
-        return buttonDom
+        return menuDom
+    }
+
+    const menuRenderBurger = () => {
+        let menuDom
+        if ( dig(currentUser, 'currentUser', 'uid') ) {
+            menuDom = <List>
+                {navItems.map((item) => (
+                <ListItem key={item} disablePadding>
+                    <ListItemButton sx={{ textAlign: 'center' }}>
+                        <ListItemText primary={item} />
+                    </ListItemButton>
+                </ListItem>
+                ))}
+                <ListItem>
+                    <ListItemButton onClick={logOut} sx={{ textAlign: 'center' }}>
+                        <ListItemText primary="Logout" />
+                    </ListItemButton>  
+                </ListItem>
+            </List>
+        } else {
+            menuDom = <Button variant='text' onClick={signInWithGoogle}
+                sx={{ color: "#000" , m: 5}}>Login</Button>
+        }
+        return menuDom
+
     }
 
     // burger menu
@@ -50,16 +83,7 @@ function Header(props) {
             Never Give App
         </Typography>
         <Divider />
-        <List>
-            {navItems.map((item) => (
-            <ListItem key={item} disablePadding>
-                <ListItemButton sx={{ textAlign: 'center' }}>
-                <ListItemText primary={item} />
-                </ListItemButton>
-            </ListItem>
-            ))}
-            <ListItem sx={{ justifyContent: 'center' }}>{buttonRender('#000')}</ListItem>
-        </List>
+        {menuRenderBurger()}
         </Box>
     );
 
@@ -86,14 +110,7 @@ function Header(props) {
                         >
                         Never Give App
                     </Typography>
-                    <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-                        {navItems.map((item) => (
-                        <Button key={item} sx={{ color: '#fff' }}>
-                            {item}
-                        </Button>
-                        ))}
-                    {buttonRender("#fff")}
-                    </Box>
+                    {menuRender("#fff")}
                 </Toolbar>
             </AppBar>
             <Box component="nav">
