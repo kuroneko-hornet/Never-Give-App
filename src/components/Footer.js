@@ -10,7 +10,7 @@ const useStyles = makeStyles(() => ({
         justifyContent: "center",
         alignItems: "center",
         color: "#FFF",
-        backgroundColor: "#3f51b5",
+        backgroundColor: "#1976d2",
         position: "fixed",
         bottom: 0,
     },
