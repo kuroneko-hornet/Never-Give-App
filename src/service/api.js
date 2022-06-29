@@ -10,6 +10,18 @@ export const addTodo = (content, uid) => {
   })
 }
 
+export const saveExercise = async (uid, region, exercise, weight, sets, reps) => {
+    console.log(uid, region, exercise, weight, sets, reps)
+  db.collection(region).add({
+    uid: uid,
+    exercise: exercise,
+    weight: parseInt(weight),
+    sets: parseInt(sets),
+    reps: parseInt(reps),
+    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+  })
+}
+
 export const initGet = async (uid) => {
     const todo = await db.collection("todo")
     .orderBy("createdAt", "desc")
