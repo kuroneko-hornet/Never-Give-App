@@ -17,9 +17,10 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
+import { BrowserRouter, Route, Routes, Link } from 'react-router-dom'
 
 const drawerWidth = 240;
-const navItems = ['Home', 'Log', 'Graph'];
+const navItems = ['Form', 'Log', 'Graph'];
 
 function Header(props) {
     const { window } = props;
@@ -36,13 +37,13 @@ function Header(props) {
         if ( dig(currentUser, 'currentUser', 'uid') ) {
             menuDom = <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
                 {navItems.map((item) => (
-                    <Button key={item} sx={{ color: '#fff' }}>
+                    <Button key={item} sx={{ color: '#fff' }} href={"/"+item}>
                         {item}
                     </Button>
                 ))}
                 <Button variant='text' onClick={logOut}
                     sx={{ color: "#fff" }}>Logout
-                </Button>            
+                </Button>
             </Box>
         } else {
             menuDom = <Button variant='text' onClick={signInWithGoogle}
