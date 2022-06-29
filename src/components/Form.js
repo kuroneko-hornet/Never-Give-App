@@ -128,6 +128,7 @@ export default function Form (props) {
         setSets(defaultValues.sets)
         setReps(defaultValues.reps)
         setLoading(false)
+        window.location.href = '/Log';
     };
 
     const submitForm =

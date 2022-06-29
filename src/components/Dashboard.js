@@ -5,6 +5,8 @@ import { AuthContext } from "../providers/AuthProvider";
 import ExerciseLog from "./ExerciseLog";
 import Form from "./Form";
 import { BrowserRouter, Route, Routes, Link } from 'react-router-dom'
+import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
 
 import * as React from 'react';
 
@@ -27,13 +29,20 @@ export default function Dashboard () {
                 <Route path="/Log"  element={
                     <ExerciseLog uid={currentUser.currentUser.uid}/> }/>
             </Routes>
-            <Link to="/">Back To Home</Link>
             </BrowserRouter>
                 // <Form uid={currentUser.currentUser.uid} isLogin={isLogin} />
                 // {exerciseLogComponent}
         )
 
     } else {
-        return <button onClick={signInWithGoogle}>login</button>
+        return (
+
+            <Box sx={{
+                textAlign: "center"
+            }}
+            >
+                <Button onClick={signInWithGoogle}>login</Button>
+            </Box>
+        )
     }
 }

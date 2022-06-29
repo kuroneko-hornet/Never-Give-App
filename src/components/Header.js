@@ -17,7 +17,6 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import { BrowserRouter, Route, Routes, Link } from 'react-router-dom'
 
 const drawerWidth = 240;
 const navItems = ['Form', 'Log', 'Graph'];
@@ -94,7 +93,7 @@ function Header(props) {
     return (
         <Box sx={{ display: 'flex' }}>
             <AppBar component="nav">
-                <Toolbar>
+                <Toolbar sx={{ justifyContent: 'space-between' }}>
                     <IconButton
                         color="inherit"
                         aria-label="open drawer"

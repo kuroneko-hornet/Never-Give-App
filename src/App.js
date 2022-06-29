@@ -3,7 +3,6 @@ import './App.css';
 import './service/firebase';
 import Header from './components/Header';
 import Dashboard from './components/Dashboard';
-import LogList from './components/LogList';
 import Footer from './components/Footer';
 
 function App() {
