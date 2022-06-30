@@ -8,7 +8,7 @@ import FormControl from '@mui/material/FormControl'
 import ButtonGroup from '@mui/material/ButtonGroup';
 import SaveIcon from '@mui/icons-material/Save';
 import LoadingButton from '@mui/lab/LoadingButton';
-// import { Link } from 'react-router-dom'
+import Typography from '@mui/material/Typography';
 
 const exerciseDicts = [
     {
@@ -60,9 +60,20 @@ const defaultValues = {
     reps: 10
 }
 
+const weekday = ['日', '月', '火', '水', '木', '金', '土'];
+
 export default function Form (props) {
     const uid = props.uid
     // const isLogin = props.isLogin
+
+    const [currentTime, setCurrentTime] = React.useState(new Date().toLocaleString())
+    const [year, setYear] = React.useState(new Date().getFullYear())
+    const [month, setMonth] = React.useState(new Date().getMonth()+1)
+    const [date, setDate] = React.useState(new Date().getDate())
+    const [week, setWeek] = React.useState(new Date().getDay())
+    const [hours, setHours] = React.useState(new Date().getHours())
+    const [minutes, setMinutes] = React.useState(new Date().getMinutes())
+    const [secounds, setSeconds] = React.useState(new Date().getSeconds())
 
     const [region, setRegion] = React.useState(defaultValues.region);
     const [exercise, setExercise] = React.useState(defaultValues.exercise);
@@ -70,6 +81,17 @@ export default function Form (props) {
     const [reps, setReps] = React.useState(defaultValues.reps);
     const [sets, setSets] = React.useState(defaultValues.sets);
     const [loading, setLoading] = React.useState(false);
+
+    setInterval( () => {
+        setCurrentTime(new Date().toLocaleString())
+        // year: new Date().getFullYear(), // 年
+        // month: new Date().getMonth()+1, // 月
+        // date: new Date().getDate(), // 日
+        setWeek(weekday[new Date().getDay()]) // 曜日
+        // hours: new Date().getHours(), // 時
+        // minutes: new Date().getMinutes(), // 分
+        // seconds: new Date().getSeconds(), // 秒
+    }, 1000)
 
     const handleExercise = (event) => {
         const [exercise, region] = event.target.value.split("/")
@@ -147,6 +169,14 @@ export default function Form (props) {
             <ButtonGroup
                 orientation="vertical"
             >
+            <Typography
+            variant="h6"
+            id="tableTitle"
+            component="div"
+            style={{ lineHeight: "2", margin: "0px 0px 20px"}}
+            >
+                {currentTime} ({week})
+            </Typography>
             {exerciseForm}
             {weightForm}
             {setForm}

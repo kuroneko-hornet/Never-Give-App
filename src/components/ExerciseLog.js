@@ -91,11 +91,6 @@ export default function ExerciseLog (props) {
     };
 
     const stickyHeaderLog = (region) => {
-        // regionを受け取って、regionをkeyとする
-        // - regionData
-        // - handleChangePage
-        // - handleChangeRowsPerPage
-        // を実行できるようにする必要がある
         const regionData = regionDataDict[region];
         const page = pageDict[region];
         const rowsPerPage = rowsPerPageDict[region];
