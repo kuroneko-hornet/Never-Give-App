@@ -28,11 +28,10 @@ export default function Router () {
         )
     } else {
         return (
-            <Box sx={{
-                textAlign: "center"
-            }}
-            >
-                <Button onClick={signInWithGoogle}>login</Button>
+            <Box sx={{ textAlign: "center" }}>
+                <Routes>
+                    <Route path="/" element={<Button onClick={signInWithGoogle}>login</Button>}/>
+                </Routes>
             </Box>
         )
     }
