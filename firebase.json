@@ -1,10 +1,17 @@
 {
   "hosting": {
-    "redirects": [ {
-        "source": "/:path*",
-        "destination": "/",
-        "type": "301"
-        } ],
+    "redirects": [
+        {
+            "source": "/form",
+            "destination": "/",
+            "type": "301"
+        },
+        {
+            "source": "/log",
+            "destination": "/",
+            "type": "301"
+        }
+    ],
     "public": "build",
     "ignore": [
       "firebase.json",
