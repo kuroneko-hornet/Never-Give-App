@@ -63,6 +63,11 @@ export default function ExerciseLog (props) {
     };
 
     const stickyHeaderLog = (regionData, region) => {
+        // regionを受け取って、regionをkeyとする
+        // - regionData
+        // - handleChangePage
+        // - handleChangeRowsPerPage
+        // を実行できるようにする必要がある
         return (
             <Paper sx={{ width: '95%', overflow: 'hidden', margin: "1em auto"}} elevation={12}>
                 <Typography
@@ -93,7 +98,7 @@ export default function ExerciseLog (props) {
                             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                             .map((row) => {
                                 return (
-                                    <TableRow hover role="checkbox" tabIndex={-1} key={row.createdAt}>
+                                    <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
                                     {columns.map((column) => {
                                         const value = row[column.id];
                                         return (

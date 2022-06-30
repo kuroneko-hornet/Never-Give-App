@@ -38,13 +38,13 @@ function Header(props) {
         if ( dig(currentUser, 'currentUser', 'uid') ) {
             menuDom = <Box sx={{ display: { xs: 'block', sm: 'none' } }}>
                 {navItems.map((item) => (
-                    <Link to={"/"+item[0]} >
+                    <Link to={"/"+item[0]} key={item[0]} >
                         <Button key={item[0]} style={{ color: "white"}}>
                                 {item[1]}
                         </Button>
                     </Link>
                 ))}
-                <Button onClick={logOut} sx={{ color: "#fff" }}>
+                <Button key="logout" onClick={logOut} sx={{ color: "#fff" }}>
                     <LogoutIcon/>
                 </Button>
             </Box>
@@ -63,7 +63,7 @@ function Header(props) {
                         </Link>
                     </Button>
                 ))}
-                <Button variant='text' onClick={logOut} size="large"
+                <Button key="logout" onClick={logOut} size="large"
                     sx={{ color: "#fff", p: "auto"}}>Logout
                 </Button>
             </Box>
@@ -76,13 +76,13 @@ function Header(props) {
         if ( dig(currentUser, 'currentUser', 'uid') ) {
             menuDom = <List>
                 {navItems.map((item) => (
-                <Link to={"/"+item[0]} style={{ color: "black", textDecoration: "none" }}>
-                    <ListItem key={item[0]} disablePadding>
+                    <Link to={"/"+item[0]} style={{ color: "black", textDecoration: "none" }} key={item[0]}>
+                    <ListItem disablePadding>
                         <ListItemButton style={{ textAlign: "center" }}>
                             <ListItemText primary={item[2]}/>
                         </ListItemButton>
                     </ListItem>
-                </Link>
+                    </Link>
                 ))}
                 <ListItem>
                     <ListItemButton onClick={logOut} sx={{ textAlign: 'center' }}>

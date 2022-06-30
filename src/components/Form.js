@@ -8,6 +8,7 @@ import FormControl from '@mui/material/FormControl'
 import ButtonGroup from '@mui/material/ButtonGroup';
 import SaveIcon from '@mui/icons-material/Save';
 import LoadingButton from '@mui/lab/LoadingButton';
+// import { Link } from 'react-router-dom'
 
 const exerciseDicts = [
     {
@@ -61,7 +62,7 @@ const defaultValues = {
 
 export default function Form (props) {
     const uid = props.uid
-    const isLogin = props.isLogin
+    // const isLogin = props.isLogin
 
     const [region, setRegion] = React.useState(defaultValues.region);
     const [exercise, setExercise] = React.useState(defaultValues.exercise);
@@ -119,16 +120,13 @@ export default function Form (props) {
 
     const saveExercise = () => {
         setLoading(true)
-        if (isLogin) {
-            Api.saveExercise(uid, region, exercise, weight, sets, reps);
-        }
+        Api.saveExercise(uid, region, exercise, weight, sets, reps);
         setRegion(defaultValues.region)
         setExercise(defaultValues.exercise)
         setWeight(defaultValues.weight)
         setSets(defaultValues.sets)
         setReps(defaultValues.reps)
         setLoading(false)
-        window.location.href = '/log';
     };
 
     const submitForm =
