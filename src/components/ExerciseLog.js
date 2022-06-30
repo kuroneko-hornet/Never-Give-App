@@ -1,8 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import * as React from 'react';
 import * as Api from "../service/api"
-import dig from "object-dig";
-import { AuthContext } from "../providers/AuthProvider";
 
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
@@ -12,12 +10,9 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-
 import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
 
 export default function ExerciseLog (props) {
-    // const currentUser = React.useContext(AuthContext);
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
     const [chestData, setChestData] = React.useState([]);
@@ -134,35 +129,3 @@ export default function ExerciseLog (props) {
         </div>
     )
 }
-
-
-
-
-
-
-
-// const Dashboard = () => {
-
-    // const fetch = async () => {
-    //     if ( dig(currentUser, 'currentUser', 'uid')) {
-    //         const data = await Api.initGet(currentUser.currentUser.uid);
-    //         await setTodos(data);
-    //     }
-    // }
-
-    // React.useEffect(() => {
-    //     fetch();
-    // }, [currentUser])
-
-
-//     const post = async () => {
-//         await Api.addTodo(inputName, currentUser.currentUser.uid);
-//         await setInputName("");
-//         fetch();
-//     }
-//     return (
-//         <div>
-//             <LogList todos={todos} fetch={fetch}/>
-//         </div>
-//     )
-// }

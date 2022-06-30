@@ -1,9 +1,7 @@
-// import React, { useContext } from "react";
 import dig from "object-dig";
 import { signInWithGoogle, logOut } from "../service/firebase";
 import { AuthContext } from "../providers/AuthProvider";
 import * as React from 'react';
-import PropTypes from 'prop-types';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
@@ -17,10 +15,9 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import { BrowserRouter, Route, Routes, Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import AddIcon from '@mui/icons-material/Add';
 import ListAltIcon from '@mui/icons-material/ListAlt';
-import LoginIcon from '@mui/icons-material/Login';
 import LogoutIcon from '@mui/icons-material/Logout';
 
 const drawerWidth = 240;
@@ -51,9 +48,6 @@ function Header(props) {
                     <LogoutIcon/>
                 </Button>
             </Box>
-        } else {
-            menuDom = <Button onClick={signInWithGoogle}
-                sx={{ color: "#fff"}}><LoginIcon/></Button>
         }
         return menuDom
     }
@@ -73,9 +67,6 @@ function Header(props) {
                     sx={{ color: "#fff", p: "auto"}}>Logout
                 </Button>
             </Box>
-        } else {
-            menuDom = <Button variant='text' onClick={signInWithGoogle}
-                sx={{ color: "#fff"}}>Login</Button>
         }
         return menuDom
     }
