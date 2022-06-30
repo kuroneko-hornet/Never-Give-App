@@ -1,6 +1,6 @@
 {
   "short_name": "Never Give App",
-  "name": "あらゆる筋肉トレーナーのトレーニングをサポートするアプリ",
+  "name": "あらゆる筋肉トレーナーのトレーニングをサポートするアプリNever Give App",
   "icons": [
     {
       "src": "favicon.ico",
@@ -20,6 +20,6 @@
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "theme_color": "#ffffff",
+  "background_color": "#2f2f2f"
 }
