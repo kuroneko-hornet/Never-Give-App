@@ -13,6 +13,9 @@ import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+
 export default function ExerciseLog (props) {
     // const currentUser = React.useContext(AuthContext);
     const [page, setPage] = React.useState(0);
@@ -64,73 +67,70 @@ export default function ExerciseLog (props) {
       setPage(0);
     };
 
-    const stickyHeaderLog = (regionData) => {
-        // <ListItem key={chestData.id} className={classes.list}
-        //     secondaryAction={
-        //         <IconButton edge="end" aria-label="delete" onClick={() => deleteHandle(chestData.id)}>
-        //             <DeleteIcon />
-        //         </IconButton>
-        // }>
-        // </ListItem>
-        if (regionData) {
-            return (
-                <Paper sx={{ width: '95%', overflow: 'hidden' }}>
-                    <TableContainer sx={{ maxHeight: 440 }}>
-                    <Table stickyHeader aria-label="sticky table">
-                        <TableHead>
-                            <TableRow>
-                                {columns.map((column) => (
-                                <TableCell
-                                    key={column.id}
-                                    align={column.align}
-                                    style={{ minWidth: column.minWidth }}
-                                >
-                                    {column.label}
-                                </TableCell>
-                                ))}
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {regionData
-                                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                .map((row) => {
-                                    return (
-                                        <TableRow hover role="checkbox" tabIndex={-1} key={row.createdAt}>
-                                        {columns.map((column) => {
-                                            const value = row[column.id];
-                                            return (
-                                                <TableCell key={column.id} align={column.align}>
-                                                    {value}
-                                                </TableCell>
-                                            );
-                                        })}
-                                        </TableRow>
-                                    );
-                                })}
-                        </TableBody>
-                    </Table>
-                    </TableContainer>
-                    <TablePagination
-                    rowsPerPageOptions={[10, 25, 100]}
-                    component="div"
-                    count={regionData.length}
-                    rowsPerPage={rowsPerPage}
-                    page={page}
-                    onPageChange={handleChangePage}
-                    onRowsPerPageChange={handleChangeRowsPerPage}
-                    />
-                </Paper>
-            )
-        } else {
-            return
-        }
+    const stickyHeaderLog = (regionData, region) => {
+        return (
+            <Paper sx={{ width: '95%', overflow: 'hidden', margin: "1em auto"}} elevation={12}>
+                <Typography
+                variant="h6"
+                id="tableTitle"
+                component="div"
+                >
+                    <div style={{ lineHeight: "1.5", margin: "10px 10px 0px"}}>{region}</div>
+                </Typography>
+                <TableContainer sx={{ maxHeight: 440 }}>
+                <Table stickyHeader aria-label="sticky table">
+                    <TableHead>
+                        <TableRow align="left" colSpan={2}></TableRow>
+                        <TableRow>
+                            {columns.map((column) => (
+                            <TableCell
+                                key={column.id}
+                                align={column.align}
+                                style={{ minWidth: column.minWidth }}
+                            >
+                                {column.label}
+                            </TableCell>
+                            ))}
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {regionData
+                            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                            .map((row) => {
+                                return (
+                                    <TableRow hover role="checkbox" tabIndex={-1} key={row.createdAt}>
+                                    {columns.map((column) => {
+                                        const value = row[column.id];
+                                        return (
+                                            <TableCell key={column.id} align={column.align}>
+                                                {value}
+                                            </TableCell>
+                                        );
+                                    })}
+                                    </TableRow>
+                                );
+                            })}
+                    </TableBody>
+                </Table>
+                </TableContainer>
+                <TablePagination
+                rowsPerPageOptions={[10, 25, 100]}
+                component="div"
+                count={regionData.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+                />
+            </Paper>
+        )
     }
 
     return (
         <div>
-            {stickyHeaderLog(chestData)}
-            {stickyHeaderLog(shouldersData)}
-            {stickyHeaderLog(legsData)}
+            {stickyHeaderLog(chestData, "CHEST")}
+            {stickyHeaderLog(shouldersData, "SHOULDER")}
+            {stickyHeaderLog(legsData, "LEG")}
         </div>
     )
 }

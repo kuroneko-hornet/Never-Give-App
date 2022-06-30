@@ -17,6 +17,8 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
+import { BrowserRouter, Route, Routes, Link } from 'react-router-dom'
+
 
 const drawerWidth = 240;
 const navItems = ['Form', 'Log', 'Graph'];
@@ -36,8 +38,10 @@ function Header(props) {
         if ( dig(currentUser, 'currentUser', 'uid') ) {
             menuDom = <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
                 {navItems.map((item) => (
-                    <Button key={item} sx={{ color: '#fff' }} href={"/"+item}>
+                    <Button key={item} sx={{ color: '#fff' }} >
+                        <Link to={"/"+item} style={{ color: "white", textDecoration: "none" }}>
                         {item}
+                        </Link>
                     </Button>
                 ))}
                 <Button variant='text' onClick={logOut}
@@ -56,11 +60,13 @@ function Header(props) {
         if ( dig(currentUser, 'currentUser', 'uid') ) {
             menuDom = <List>
                 {navItems.map((item) => (
-                <ListItem key={item} disablePadding>
-                    <ListItemButton sx={{ textAlign: 'center' }}>
-                        <ListItemText primary={item} />
-                    </ListItemButton>
-                </ListItem>
+                <Link to={"/"+item} style={{ color: "black", textDecoration: "none" }}>
+                    <ListItem key={item} disablePadding>
+                        <ListItemButton style={{ textAlign: "center" }}>
+                            <ListItemText primary={item}/>
+                        </ListItemButton>
+                    </ListItem>
+                </Link>
                 ))}
                 <ListItem>
                     <ListItemButton onClick={logOut} sx={{ textAlign: 'center' }}>
