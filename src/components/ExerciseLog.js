@@ -12,16 +12,67 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 
+
+const columns = [
+    { id: 'createdAt', label: "Data", minWidth: 40 },
+    { id: 'exercise', label: "Exercise", minWidth: 40 },
+    {
+        id: 'weight',
+        label: "weight" + "\u00a0\n(kg)",
+        minWidth: 10,
+        align: 'right',
+    },
+    {
+        id: 'sets',
+        label: "sets",
+        minWidth: 10,
+        align: 'right',
+    },
+    {
+        id: 'reps',
+        label: "reps",
+        minWidth: 10,
+        align: 'right',
+    }
+];
+
+
+const defaultValue = {
+    rowsPerPage: 3,
+    page: 0
+}
+
 export default function ExerciseLog (props) {
-    const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(10);
+    const [chestPage, setChestPage] = React.useState(defaultValue.page);
+    const [shouldersPage, setShouldersPage] = React.useState(defaultValue.page);
+    const [legsPage, setLegsPage] = React.useState(defaultValue.page);
+    const pageDict = {
+        chest: {value: chestPage, set: setChestPage},
+        shoulders: {value: shouldersPage, set: setShouldersPage},
+        legs: {value: legsPage, set: setLegsPage}
+    }
+
+    const [chestPerPage, setChestPerPage] = React.useState(defaultValue.rowsPerPage);
+    const [shouldersPerPage, setShouldersPerPage] = React.useState(defaultValue.rowsPerPage);
+    const [legsPerPage, setLegsPerPage] = React.useState(defaultValue.rowsPerPage);
+    const rowsPerPageDict = {
+        chest: {value: chestPerPage, set: setChestPerPage},
+        shoulders: {value: shouldersPerPage, set: setShouldersPerPage},
+        legs: {value: legsPerPage, set: setLegsPerPage}
+    }
+
     const [chestData, setChestData] = React.useState([]);
-    const [shouldersData, setShoulderData] = React.useState([]);
+    const [shouldersData, setShouldersData] = React.useState([]);
     const [legsData, setLegsData] = React.useState([]);
+    const regionDataDict = {
+        chest: chestData,
+        shoulders: shouldersData,
+        legs: legsData
+    }
 
     React.useEffect(() => {
         updateExerciseLog("chest", setChestData);
-        updateExerciseLog("shoulders", setShoulderData);
+        updateExerciseLog("shoulders", setShouldersData);
         updateExerciseLog("legs", setLegsData);
     }, [])
     
@@ -30,44 +81,25 @@ export default function ExerciseLog (props) {
             setFunc(data)
     }
 
-    const columns = [
-        { id: 'createdAt', label: "Data", minWidth: 40 },
-        { id: 'exercise', label: "Exercise", minWidth: 40 },
-        {
-            id: 'weight',
-            label: "weight" + "\u00a0\n(kg)",
-            minWidth: 10,
-            align: 'right',
-        },
-        {
-            id: 'sets',
-            label: "sets",
-            minWidth: 10,
-            align: 'right',
-        },
-        {
-            id: 'reps',
-            label: "reps",
-            minWidth: 10,
-            align: 'right',
-        }
-    ];
-
-    const handleChangePage = (event, newPage) => {
+    const handleChangePage = (event, newPage, setPage) => {
       setPage(newPage);
     };
   
-    const handleChangeRowsPerPage = (event) => {
+    const handleChangeRowsPerPage = (event, setRowsPerPage, setPage) => {
       setRowsPerPage(+event.target.value);
       setPage(0);
     };
 
-    const stickyHeaderLog = (regionData, region) => {
+    const stickyHeaderLog = (region) => {
         // regionを受け取って、regionをkeyとする
         // - regionData
         // - handleChangePage
         // - handleChangeRowsPerPage
         // を実行できるようにする必要がある
+        const regionData = regionDataDict[region];
+        const page = pageDict[region];
+        const rowsPerPage = rowsPerPageDict[region];
+
         return (
             <Paper sx={{ width: '95%', overflow: 'hidden', margin: "1em auto"}} elevation={12}>
                 <Typography
@@ -75,7 +107,7 @@ export default function ExerciseLog (props) {
                 id="tableTitle"
                 component="div"
                 >
-                    <div style={{ lineHeight: "1.5", margin: "10px 10px 0px"}}>{region}</div>
+                    <div style={{ lineHeight: "1.5", margin: "10px 10px 0px"}}>{region.toUpperCase()}</div>
                 </Typography>
                 <TableContainer sx={{ maxHeight: 440 }}>
                 <Table stickyHeader aria-label="sticky table">
@@ -95,7 +127,7 @@ export default function ExerciseLog (props) {
                     </TableHead>
                     <TableBody>
                         {regionData
-                            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                            .slice(page.value * rowsPerPage.value, page.value * rowsPerPage.value + rowsPerPage.value)
                             .map((row) => {
                                 return (
                                     <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
@@ -114,13 +146,13 @@ export default function ExerciseLog (props) {
                 </Table>
                 </TableContainer>
                 <TablePagination
-                rowsPerPageOptions={[10, 25, 100]}
+                rowsPerPageOptions={[3, 10, 100]}
                 component="div"
                 count={regionData.length}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                onPageChange={handleChangePage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
+                rowsPerPage={rowsPerPage.value}
+                page={page.value}
+                onPageChange={(event, newPage) => handleChangePage(event, newPage, page.set)}
+                onRowsPerPageChange={(event) => handleChangeRowsPerPage(event, rowsPerPage.set, page.set)}
                 />
             </Paper>
         )
@@ -128,9 +160,9 @@ export default function ExerciseLog (props) {
 
     return (
         <div>
-            {stickyHeaderLog(chestData, "CHEST")}
-            {stickyHeaderLog(shouldersData, "SHOULDER")}
-            {stickyHeaderLog(legsData, "LEG")}
+            {stickyHeaderLog("chest")}
+            {stickyHeaderLog("shoulders")}
+            {stickyHeaderLog("legs")}
         </div>
     )
 }
