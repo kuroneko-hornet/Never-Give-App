@@ -18,10 +18,13 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import { BrowserRouter, Route, Routes, Link } from 'react-router-dom'
-
+import AddIcon from '@mui/icons-material/Add';
+import ListAltIcon from '@mui/icons-material/ListAlt';
+import LoginIcon from '@mui/icons-material/Login';
+import LogoutIcon from '@mui/icons-material/Logout';
 
 const drawerWidth = 240;
-const navItems = ['Form', 'Log', 'Graph'];
+const navItems = [['form', <AddIcon/>, "Register"], ['log', <ListAltIcon/>, "Log"]];
 
 function Header(props) {
     const { window } = props;
@@ -33,19 +36,41 @@ function Header(props) {
 
     const currentUser = React.useContext(AuthContext);
 
+    const menuRenderMobile = () => {
+        let menuDom
+        if ( dig(currentUser, 'currentUser', 'uid') ) {
+            menuDom = <Box sx={{ display: { xs: 'block', sm: 'none' } }}>
+                {navItems.map((item) => (
+                    <Link to={"/"+item[0]} >
+                        <Button key={item[0]} style={{ color: "white"}}>
+                                {item[1]}
+                        </Button>
+                    </Link>
+                ))}
+                <Button onClick={logOut} sx={{ color: "#fff" }}>
+                    <LogoutIcon/>
+                </Button>
+            </Box>
+        } else {
+            menuDom = <Button onClick={signInWithGoogle}
+                sx={{ color: "#fff"}}><LoginIcon/></Button>
+        }
+        return menuDom
+    }
+
     const menuRender = () => {
         let menuDom
         if ( dig(currentUser, 'currentUser', 'uid') ) {
             menuDom = <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
                 {navItems.map((item) => (
-                    <Button key={item} sx={{ color: '#fff' }} >
-                        <Link to={"/"+item} style={{ color: "white", textDecoration: "none" }}>
-                        {item}
+                    <Button key={item[0]} size="large">
+                        <Link to={"/"+item[0]} style={{ color: "white", textDecoration: "none"}}>
+                        {item[2]}
                         </Link>
                     </Button>
                 ))}
-                <Button variant='text' onClick={logOut}
-                    sx={{ color: "#fff" }}>Logout
+                <Button variant='text' onClick={logOut} size="large"
+                    sx={{ color: "#fff", p: "auto"}}>Logout
                 </Button>
             </Box>
         } else {
@@ -60,10 +85,10 @@ function Header(props) {
         if ( dig(currentUser, 'currentUser', 'uid') ) {
             menuDom = <List>
                 {navItems.map((item) => (
-                <Link to={"/"+item} style={{ color: "black", textDecoration: "none" }}>
-                    <ListItem key={item} disablePadding>
+                <Link to={"/"+item[0]} style={{ color: "black", textDecoration: "none" }}>
+                    <ListItem key={item[0]} disablePadding>
                         <ListItemButton style={{ textAlign: "center" }}>
-                            <ListItemText primary={item}/>
+                            <ListItemText primary={item[2]}/>
                         </ListItemButton>
                     </ListItem>
                 </Link>
@@ -105,18 +130,19 @@ function Header(props) {
                         aria-label="open drawer"
                         edge="start"
                         onClick={handleDrawerToggle}
-                        sx={{ mr: 2, display: { sm: 'none' } }}
+                        sx={{ mr: 2, display: { xs: 'block', sm: 'none' }}}
                         >
                         <MenuIcon />
                     </IconButton>
                     <Typography
                         variant="h6"
                         component="div"
-                        sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
+                        sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' }}}
                         >
                         Never Give App
                     </Typography>
-                    {menuRender("#fff")}
+                    {menuRenderMobile()}
+                    {menuRender()}
                 </Toolbar>
             </AppBar>
             <Box component="nav">
@@ -142,13 +168,5 @@ function Header(props) {
         </Box>
     );
 }
-
-Header.propTypes = {
-  /**
-   * Injected by the documentation to work in an iframe.
-   * You won't need it on your project.
-   */
-  window: PropTypes.func,
-};
 
 export default Header;

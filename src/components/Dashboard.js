@@ -24,9 +24,9 @@ export default function Dashboard () {
     if ( isLogin ) {
         return (
             <Routes>
-                <Route path="/Form" element={
+                <Route path="/form" element={
                     <Form uid={currentUser.currentUser.uid} isLogin={isLogin} /> }/>
-                <Route path="/Log"  element={
+                <Route path="/log"  element={
                     <ExerciseLog uid={currentUser.currentUser.uid}/> }/>
             </Routes>
                 // <Form uid={currentUser.currentUser.uid} isLogin={isLogin} />
