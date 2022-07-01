@@ -75,7 +75,7 @@ export default function LogChart (props) {
             xaxis: {
                 categories: graphData.x,
                 range: Math.min(10, graphData.x.length) -1,
-                labels: {offsetX: 1}
+                labels: {show: false}
             },
             yaxis: {
                 labels: {
@@ -94,7 +94,7 @@ export default function LogChart (props) {
                 >
                     <div style={{ lineHeight: "1.5", margin: "10px 10px 0px"}}>{region.toUpperCase()}</div>
                 </Typography>
-                <Chart type="line" options={options} height={200} width='95%'
+                <Chart type="line" options={options} height={200} width='90%'
                     series={[{
                         name: 'weight',
                         data: graphData.y}]}
