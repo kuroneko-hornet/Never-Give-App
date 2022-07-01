@@ -1,24 +1,18 @@
 import * as Api from "../service/api"
 import * as React from 'react';
 import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
-import Select from '@mui/material/Select';
-import InputLabel from '@mui/material/InputLabel';
-import FormControl from '@mui/material/FormControl'
-import ButtonGroup from '@mui/material/ButtonGroup';
-import SaveIcon from '@mui/icons-material/Save';
-import LoadingButton from '@mui/lab/LoadingButton';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import Chart from "react-apexcharts";
 
 export default function LogChart (props) {
 
-    // const [region, setRegion] = React.useState("");
-    // const [exercise, setExercise] = React.useState("");
-    // const [weight, setWeight] = React.useState(0);
-    // const [reps, setReps] = React.useState(0);
-    // const [sets, setSets] = React.useState(0);
+    /**
+     * 現状、exerciseがごちゃ混ぜになってregionでまとめて表示されている。
+     * 要件としては、1regionにexerciseの数だけgraphを追加したい。
+     * その時に軸のxは固定なので、データがない箇所についてはnullを入れる必要がある。
+     * 同じに同じ種目をしていいた場合、数値が高い方を採用することとする。
+     */
 
     const [chestData, setChestData] = React.useState({x: [], y: [], exercise: []});
     const [shouldersData, setShouldersData] = React.useState({x: [], y: [], exercise: []});
@@ -56,7 +50,7 @@ export default function LogChart (props) {
 
         const options = {
             chart: {
-                // height: 50,
+                offsetX: 20,
                 zoom: {
                     enabled: false
                 },
@@ -70,19 +64,18 @@ export default function LogChart (props) {
                 },
                 toolbar: {
                     show: false
-                }
+                },
             },
             stroke: {
                 curve: 'smooth'
             },
             dataLabels: {
                 enabled: true,
-                // background: {borderRadius: 5}
             },
             xaxis: {
                 categories: graphData.x,
-                // type: "datetime",
-                range: Math.min(10, graphData.x.length) -1
+                range: Math.min(10, graphData.x.length) -1,
+                labels: {offsetX: 1}
             },
             yaxis: {
                 labels: {
@@ -101,7 +94,7 @@ export default function LogChart (props) {
                 >
                     <div style={{ lineHeight: "1.5", margin: "10px 10px 0px"}}>{region.toUpperCase()}</div>
                 </Typography>
-                <Chart type="line" options={options}　height={200}
+                <Chart type="line" options={options} height={200} width='95%'
                     series={[{
                         name: 'weight',
                         data: graphData.y}]}

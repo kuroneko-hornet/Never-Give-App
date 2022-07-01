@@ -10,6 +10,11 @@
             "source": "/log",
             "destination": "/",
             "type": "301"
+        },
+        {
+            "source": "/chart",
+            "destination": "/",
+            "type": "301"
         }
     ],
     "public": "build",
