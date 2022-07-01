@@ -1,30 +1,36 @@
 import firebase from "firebase/compat/app";
 import { db } from './firebase'
+import dayjs from 'dayjs';
 
-export const addTodo = (content, uid) => {
-  db.collection("todo").add({
-    content: content,
-    uid: uid,
-    isComplete: false,
-    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-  })
+export const saveExercise = (uid, region, exercise, weight, sets, reps) => {
+    db.collection(region).add({
+        uid: uid,
+        exercise: exercise,
+        weight: parseInt(weight),
+        sets: parseInt(sets),
+        reps: parseInt(reps),
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+    })
 }
 
-export const initGet = async (uid) => {
-    const todo = await db.collection("todo")
-    .orderBy("createdAt", "desc")
-    .where("uid", "==", uid);
+export const selectExerciseLog = async (uid, region) => {
+    const regionCollection = await db.collection(region)
+        .orderBy("createdAt", "desc")
+        .where("uid", "==", uid);
 
-    return todo.get().then((snapShot) => {
-        let todos = [];
+    return regionCollection.get().then((snapShot) => {
+        let exerciseLog = [];
         snapShot.forEach((doc) => {
-            todos.push({
+            exerciseLog.push({
                 id: doc.id,
-                content: doc.data().content,
-                isComplete: doc.data().isComplete,
-            });
+                exercise: doc.data().exercise,
+                weight: doc.data().weight,
+                sets: doc.data().sets,
+                reps: doc.data().reps,
+                createdAt: dayjs(doc.data().createdAt.toDate()).format('YYYY/MM/DD'),
+            })
         });
-        return todos;
+        return exerciseLog;
     });
 }
 

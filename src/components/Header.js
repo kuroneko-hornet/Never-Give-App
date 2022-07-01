@@ -1,9 +1,7 @@
-// import React, { useContext } from "react";
 import dig from "object-dig";
 import { signInWithGoogle, logOut } from "../service/firebase";
 import { AuthContext } from "../providers/AuthProvider";
 import * as React from 'react';
-import PropTypes from 'prop-types';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
@@ -17,9 +15,19 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
+import { Link } from 'react-router-dom'
+import AddIcon from '@mui/icons-material/Add';
+import ListAltIcon from '@mui/icons-material/ListAlt';
+import LogoutIcon from '@mui/icons-material/Logout';
+import Update from "./Update";
+import BarChartIcon from '@mui/icons-material/BarChart';
 
 const drawerWidth = 240;
-const navItems = ['Home', 'Log', 'Graph'];
+const navItems = [
+    ['form', <AddIcon/>, "Register"],
+    ['log', <ListAltIcon/>, "Log"],
+    ['chart', <BarChartIcon/>, "Chart"],
+];
 
 function Header(props) {
     const { window } = props;
@@ -31,16 +39,73 @@ function Header(props) {
 
     const currentUser = React.useContext(AuthContext);
 
-    const buttonRender = (color) => {
-        let buttonDom
+    const menuRenderMobile = () => {
+        let menuDom
         if ( dig(currentUser, 'currentUser', 'uid') ) {
-            buttonDom = <Button variant='text' onClick={logOut}
-                sx={{ color: color }}>Logout</Button>            
-        } else {
-            buttonDom = <Button variant='text' onClick={signInWithGoogle}
-                sx={{ color: color }}>Login</Button>
+            menuDom = <Box sx={{ display: { xs: 'block', sm: 'none' } }}>
+                {navItems.map((item) => (
+                    <Link to={"/"+item[0]} key={item[0]} >
+                        <Button style={{ color: "white"}}>
+                                {item[1]}
+                        </Button>
+                    </Link>
+                ))}
+                <Button onClick={logOut} sx={{ color: "#fff" }}>
+                    <LogoutIcon/>
+                </Button>
+            </Box>
         }
-        return buttonDom
+        return menuDom
+    }
+
+    const menuRender = () => {
+        let menuDom
+        if ( dig(currentUser, 'currentUser', 'uid') ) {
+            menuDom = <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+                {navItems.map((item) => (
+                    <Button key={item[0]} size="large">
+                        <Link to={"/"+item[0]} style={{ color: "white", textDecoration: "none"}}>
+                        {item[2]}
+                        </Link>
+                    </Button>
+                ))}
+                <Button onClick={logOut} size="large"
+                    sx={{ color: "#fff", p: "auto"}}>Logout
+                </Button>
+            </Box>
+        }
+        return menuDom
+    }
+
+    const menuRenderBurger = () => {
+        let menuDom
+        if ( dig(currentUser, 'currentUser', 'uid') ) {
+            menuDom = <List>
+                {navItems.map((item) => (
+                    <Link to={"/"+item[0]} style={{ color: "black", textDecoration: "none" }} key={item[0]}>
+                    <ListItem disablePadding>
+                        <ListItemButton style={{ textAlign: "center" }}>
+                            <ListItemText primary={item[2]}/>
+                        </ListItemButton>
+                    </ListItem>
+                    </Link>
+                ))}
+                <ListItem>
+                    <ListItemButton onClick={logOut} sx={{ textAlign: 'center' }}>
+                        <ListItemText primary="Logout" />
+                    </ListItemButton>
+                </ListItem>
+                <Update />
+            </List>
+        } else {
+            menuDom = <Box>
+                <Button variant='text' onClick={signInWithGoogle}
+                sx={{ color: "#000" , m: 5}}>Login</Button>
+                <Update />
+                </Box>
+        }
+        return menuDom
+
     }
 
     // burger menu
@@ -50,16 +115,7 @@ function Header(props) {
             Never Give App
         </Typography>
         <Divider />
-        <List>
-            {navItems.map((item) => (
-            <ListItem key={item} disablePadding>
-                <ListItemButton sx={{ textAlign: 'center' }}>
-                <ListItemText primary={item} />
-                </ListItemButton>
-            </ListItem>
-            ))}
-            <ListItem sx={{ justifyContent: 'center' }}>{buttonRender('#000')}</ListItem>
-        </List>
+        {menuRenderBurger()}
         </Box>
     );
 
@@ -69,31 +125,25 @@ function Header(props) {
     return (
         <Box sx={{ display: 'flex' }}>
             <AppBar component="nav">
-                <Toolbar>
+                <Toolbar sx={{ justifyContent: 'space-between' }}>
                     <IconButton
                         color="inherit"
                         aria-label="open drawer"
                         edge="start"
                         onClick={handleDrawerToggle}
-                        sx={{ mr: 2, display: { sm: 'none' } }}
+                        sx={{ mr: 2, display: { xs: 'block', sm: 'none' }}}
                         >
                         <MenuIcon />
                     </IconButton>
                     <Typography
                         variant="h6"
                         component="div"
-                        sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
+                        sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' }}}
                         >
                         Never Give App
                     </Typography>
-                    <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-                        {navItems.map((item) => (
-                        <Button key={item} sx={{ color: '#fff' }}>
-                            {item}
-                        </Button>
-                        ))}
-                    {buttonRender("#fff")}
-                    </Box>
+                    {menuRenderMobile()}
+                    {menuRender()}
                 </Toolbar>
             </AppBar>
             <Box component="nav">
@@ -119,13 +169,5 @@ function Header(props) {
         </Box>
     );
 }
-
-Header.propTypes = {
-  /**
-   * Injected by the documentation to work in an iframe.
-   * You won't need it on your project.
-   */
-  window: PropTypes.func,
-};
 
 export default Header;

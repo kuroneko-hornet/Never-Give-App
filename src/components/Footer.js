@@ -5,12 +5,12 @@ import { makeStyles } from "@material-ui/core/styles";
 const useStyles = makeStyles(() => ({
     root: {
         width: "100%",
-        height: 56,
+        height: 30,
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
         color: "#FFF",
-        backgroundColor: "#3f51b5",
+        backgroundColor: "#1976d2",
         position: "fixed",
         bottom: 0,
     },

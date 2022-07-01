@@ -2,16 +2,18 @@ import { AuthProvider } from './providers/AuthProvider';
 import './App.css';
 import './service/firebase';
 import Header from './components/Header';
-import Dashboard from './components/Dashboard';
-import LogList from './components/LogList';
+import Router from './components/Router';
 import Footer from './components/Footer';
+import { BrowserRouter, Route, Routes, Link } from 'react-router-dom'
 
 function App() {
     return (
         <AuthProvider>
-            <Header />
-            <Dashboard />
-            <Footer />
+            <BrowserRouter>
+                <Header />
+                <Router />
+                <Footer />
+            </BrowserRouter>
         </AuthProvider>
     );
 }
