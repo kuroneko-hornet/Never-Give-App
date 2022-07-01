@@ -3,6 +3,7 @@ import { signInWithGoogle } from "../service/firebase";
 import { AuthContext } from "../providers/AuthProvider";
 import ExerciseLog from "./ExerciseLog";
 import Form from "./Form";
+import LogChart from "./LogChart";
 import { Route, Routes } from 'react-router-dom'
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
@@ -24,6 +25,8 @@ export default function Router () {
                     <Form uid={currentUser.currentUser.uid} isLogin={isLogin} /> }/>
                 <Route path="/log"  element={
                     <ExerciseLog uid={currentUser.currentUser.uid}/> }/>
+                <Route path="/chart"  element={
+                    <LogChart uid={currentUser.currentUser.uid}/> }/>
             </Routes>
         )
     } else {

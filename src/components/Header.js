@@ -20,9 +20,14 @@ import AddIcon from '@mui/icons-material/Add';
 import ListAltIcon from '@mui/icons-material/ListAlt';
 import LogoutIcon from '@mui/icons-material/Logout';
 import Update from "./Update";
+import BarChartIcon from '@mui/icons-material/BarChart';
 
 const drawerWidth = 240;
-const navItems = [['form', <AddIcon/>, "Register"], ['log', <ListAltIcon/>, "Log"]];
+const navItems = [
+    ['form', <AddIcon/>, "Register"],
+    ['log', <ListAltIcon/>, "Log"],
+    ['chart', <BarChartIcon/>, "Chart"],
+];
 
 function Header(props) {
     const { window } = props;
