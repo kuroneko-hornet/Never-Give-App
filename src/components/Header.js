@@ -19,6 +19,7 @@ import { Link } from 'react-router-dom'
 import AddIcon from '@mui/icons-material/Add';
 import ListAltIcon from '@mui/icons-material/ListAlt';
 import LogoutIcon from '@mui/icons-material/Logout';
+import Update from "./Update";
 
 const drawerWidth = 240;
 const navItems = [['form', <AddIcon/>, "Register"], ['log', <ListAltIcon/>, "Log"]];
@@ -39,12 +40,12 @@ function Header(props) {
             menuDom = <Box sx={{ display: { xs: 'block', sm: 'none' } }}>
                 {navItems.map((item) => (
                     <Link to={"/"+item[0]} key={item[0]} >
-                        <Button key={item[0]} style={{ color: "white"}}>
+                        <Button style={{ color: "white"}}>
                                 {item[1]}
                         </Button>
                     </Link>
                 ))}
-                <Button key="logout" onClick={logOut} sx={{ color: "#fff" }}>
+                <Button onClick={logOut} sx={{ color: "#fff" }}>
                     <LogoutIcon/>
                 </Button>
             </Box>
@@ -63,7 +64,7 @@ function Header(props) {
                         </Link>
                     </Button>
                 ))}
-                <Button key="logout" onClick={logOut} size="large"
+                <Button onClick={logOut} size="large"
                     sx={{ color: "#fff", p: "auto"}}>Logout
                 </Button>
             </Box>
@@ -87,12 +88,16 @@ function Header(props) {
                 <ListItem>
                     <ListItemButton onClick={logOut} sx={{ textAlign: 'center' }}>
                         <ListItemText primary="Logout" />
-                    </ListItemButton>  
+                    </ListItemButton>
                 </ListItem>
+                <Update />
             </List>
         } else {
-            menuDom = <Button variant='text' onClick={signInWithGoogle}
+            menuDom = <Box>
+                <Button variant='text' onClick={signInWithGoogle}
                 sx={{ color: "#000" , m: 5}}>Login</Button>
+                <Update />
+                </Box>
         }
         return menuDom
 
